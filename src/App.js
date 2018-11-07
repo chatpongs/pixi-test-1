@@ -1,26 +1,21 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Application, Sprite } from 'pixi.js';
 
 class App extends Component {
+  async componentDidMount() {
+    this.app = new Application({width: 800, height: 600});
+    this.canvas.appendChild(this.app.view);
+
+    const dora = Sprite.fromImage(require('./wheel.png'));
+    dora.anchor.set(0.5, 0.5);
+    dora.position.set(this.app.screen.width / 2, this.app.screen.height / 2);
+    this.app.stage.addChild(dora);
+    this.app.ticker.add((delta) => dora.rotation += delta * 0.5);
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <div ref={(r) => { this.canvas = r }} />
     );
   }
 }
