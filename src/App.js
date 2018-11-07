@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Application, Sprite } from 'pixi.js';
 
-import dora from './sprites/dora';
+import arrow from './sprites/arrow';
 
 class App extends Component {
   state = {
@@ -16,8 +16,8 @@ class App extends Component {
     wheel.anchor.set(0.5, 0.5);
     wheel.position.set(this.app.screen.width / 2, this.app.screen.height / 2);
     this.app.stage.addChild(wheel);
-    this.app.stage.addChild(dora);
-    dora.position.set(this.app.screen.width / 2, 10);
+    this.app.stage.addChild(arrow);
+    arrow.position.set(this.app.screen.width / 2, 40);
 
     this.app.ticker.add((delta) => wheel.rotation += delta * speed);
     wheel.interactive = true;
