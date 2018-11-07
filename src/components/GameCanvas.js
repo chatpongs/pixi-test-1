@@ -4,19 +4,14 @@ import { Application, Sprite } from 'pixi.js';
 import arrow from '../sprites/arrow';
 
 class GameCanvas extends React.Component {
+  logicalWidth = 600;
+  logicalHeight = 600;
+
   state = {
     done: false,
   }
   componentDidMount() {
-    const logicalWidth = 600;
-    const logicalHeight = 600
-    this.app = new Application({ width: logicalWidth, height: logicalHeight, transparent: true });
-    // resize handler
-    this.app.ticker.add(() => {
-      const scaleFactor = this.container.clientWidth / logicalWidth;
-      this.app.renderer.resize(this.container.clientWidth, this.container.clientHeight);
-      this.app.stage.scale.set(scaleFactor);
-    });
+    this.app = new Application({ width: this.logicalWidth, height: this.logicalHeight, transparent: true });
     // add canvas to the container
     this.container.appendChild(this.app.view);
     // setup the spin wheel
@@ -44,6 +39,17 @@ class GameCanvas extends React.Component {
     this.app.stage.addChild(arrow);
     // setup animations
     this.app.ticker.add((delta) => wheel.rotation += delta * speed);
+    // resize handler
+    this.handleResize();
+    window.addEventListener('resize', this.handleResize);
+  }
+  componentWillUnmount(){
+    window.removeEventListener('resize', this.handleResize);
+  }
+  handleResize = () => {
+    const scaleFactor = this.container.clientWidth / this.logicalWidth;
+    this.app.renderer.resize(this.container.clientWidth, this.container.clientHeight);
+    this.app.stage.scale.set(scaleFactor);
   }
   render() {
     return (
